@@ -1,6 +1,7 @@
 package com.avanade.demo.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "segment")
@@ -10,6 +11,7 @@ public class Segment {
     private Long id;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Nome do segmento é obrigatório")
     private String name;
 
     public Long getId() {
