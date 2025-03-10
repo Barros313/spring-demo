@@ -67,7 +67,7 @@ public class CustomerPersistenceAdapter implements CustomerOutput {
     @Override
     public List<CustomerDTO> getAllCustomers(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by("id").ascending());
-        return customerRepository.findAll(pageable).stream().map(customer -> {
+        return customerRepository.findAllCustomers(pageable).stream().map(customer -> {
                 List<CustomerDocumentDTO> docs = customer.getDocuments().stream().map(
                         document -> new CustomerDocumentDTO(document.getDocumentType().getName(),
                                 document.getDocument())).toList();
@@ -79,6 +79,14 @@ public class CustomerPersistenceAdapter implements CustomerOutput {
                 return new CustomerDTO(customer.getId(), customer.getName(),
                         customer.getSegment().getName(), docs, contacts);
             }).toList();
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomersBySegment(String segmentName, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by("name").ascending());
+        return customerRepository.findAllCustomersBySegment(segmentName, pageable).stream().map(customer ->
+                new CustomerDTO(null, customer.name(), customer.segmentName(), null, null)
+        ).toList();
     }
 
     @Transactional

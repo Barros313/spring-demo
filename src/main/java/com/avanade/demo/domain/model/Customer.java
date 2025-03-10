@@ -18,6 +18,7 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "segment_id", nullable = false)
+
     private Segment segment;
 
     @OneToMany

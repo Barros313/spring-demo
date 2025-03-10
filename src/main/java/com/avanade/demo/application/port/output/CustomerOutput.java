@@ -13,5 +13,7 @@ public interface CustomerOutput {
 
     List<CustomerDTO> getAllCustomers(int pageNo, int pageSize);
 
+    List<CustomerDTO> getAllCustomersBySegment(String segmentName, int pageNo, int pageSize);
+
     void addCustomer(AddCustomerDTO addCustomerDTO);
 }

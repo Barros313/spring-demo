@@ -23,6 +23,11 @@ public class CustomerService implements GetCustomerUseCase, AddCustomerUseCase {
     }
 
     @Override
+    public List<CustomerDTO> getAllCustomersBySegment(String segmentName) {
+        return List.of();
+    }
+
+    @Override
     public CustomerDTO getCustomerById(Long id) {
         return customerOutput.getCustomerById(id);
     }

@@ -11,4 +11,6 @@ public interface GetCustomerUseCase {
     CustomerDTO getCustomerByName(String username);
 
     List<CustomerDTO> getAllCustomers(int pageNo, int pageSize);
+
+    List<CustomerDTO> getAllCustomersBySegment(String segmentName);
 }

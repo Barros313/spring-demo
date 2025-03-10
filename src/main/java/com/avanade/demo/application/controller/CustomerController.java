@@ -3,7 +3,6 @@ package com.avanade.demo.application.controller;
 import com.avanade.demo.application.dto.AddCustomerDTO;
 import com.avanade.demo.application.dto.CustomerDTO;
 import com.avanade.demo.application.port.output.CustomerOutput;
-import com.avanade.demo.domain.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,20 @@ public class CustomerController {
     @GetMapping
     public List<CustomerDTO> getAllCustomers(@RequestParam(defaultValue = "1") int pageNo,
                                              @RequestParam(defaultValue = "10") int pageSize) {
+        if (pageNo < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Número da página e tamanho da página devem ser maiores que 0");
+        }
         return customerOutput.getAllCustomers(pageNo, pageSize);
+    }
+
+    @GetMapping("/segment/{segmentName}")
+    public List<CustomerDTO> getAllCustomersBySegment(@PathVariable  String segmentName,
+                                                      @RequestParam(defaultValue = "1") int pageNo,
+                                                      @RequestParam(defaultValue = "10") int pageSize) {
+        if (pageNo < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Número da página e tamanho da página devem ser maiores que 0");
+        }
+        return customerOutput.getAllCustomersBySegment(segmentName, pageNo, pageSize);
     }
 
     @GetMapping("/{id}")
