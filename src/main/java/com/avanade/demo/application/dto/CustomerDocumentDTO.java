@@ -1,4 +1,7 @@
 package com.avanade.demo.application.dto;
 
-public record CustomerDocumentDTO(String documentNumber, String documentType) {
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record CustomerDocumentDTO(String documentType, String documentNumber) {
 }

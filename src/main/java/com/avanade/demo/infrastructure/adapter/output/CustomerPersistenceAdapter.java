@@ -8,12 +8,15 @@ import com.avanade.demo.application.port.output.CustomerOutput;
 import com.avanade.demo.domain.exception.EntityNotFoundException;
 import com.avanade.demo.domain.model.*;
 import com.avanade.demo.infrastructure.adapter.output.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -102,5 +105,31 @@ public class CustomerPersistenceAdapter implements CustomerOutput {
         }
 
         customer.setContacts(contacts);
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by("id").ascending());
+
+        return customerRepository.findAllCustomers(pageable).stream().map(customer -> {
+            List<CustomerDocumentDTO> documentDTOs = customer.getDocuments().stream().map(document -> new CustomerDocumentDTO(
+                    document.getDocumentType().getName(),
+                    document.getDocument()
+            )).toList();
+
+            List<CustomerContactDTO> contactDTOs = customer.getContacts().stream().map(
+                    contact -> new CustomerContactDTO(
+                            contact.getContactType().getName(),
+                            contact.getContactValue()
+                    )
+            ).toList();
+
+            return new CustomerDTO(
+                    customer.getId(),
+                    customer.getName(),
+                    customer.getSegment().getName(),
+                    documentDTOs,
+                    contactDTOs);
+        }).toList();
     }
 }

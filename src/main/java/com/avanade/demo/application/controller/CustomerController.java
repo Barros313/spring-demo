@@ -9,14 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
 
     private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @GetMapping
+    public List<CustomerDTO> getAllCustomers(@RequestParam(defaultValue = "1") int pageNo,
+                                             @RequestParam(defaultValue = "10") int pageSize) {
+
+        if (pageNo < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Page number and page size must be greater than 0");
+        }
+
+        return customerService.getAllCustomers(pageNo, pageSize);
+    }
 
     @GetMapping("/{id}")
     public CustomerDTO getCustomerById(@PathVariable long id) {
