@@ -1,10 +1,14 @@
 package com.avanade.demo.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "customer_documents")
+@Getter @Setter
 public class CustomerDocument {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +23,4 @@ public class CustomerDocument {
 
     @Column(nullable = false)
     private String document;
-
-    // Getters and Setters
 }

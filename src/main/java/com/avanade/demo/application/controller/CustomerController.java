@@ -1,14 +1,13 @@
 package com.avanade.demo.application.controller;
 
+import com.avanade.demo.application.dto.CreateCustomerDTO;
 import com.avanade.demo.application.dto.CustomerDTO;
 import com.avanade.demo.domain.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -31,5 +30,12 @@ public class CustomerController {
         CustomerDTO customer = customerService.getCustomerByName(customerName);
         logger.info("Found customer with name: " + customerName);
         return customer;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createCustomer(@RequestBody CreateCustomerDTO createCustomerDTO) {
+        customerService.createCustomer(createCustomerDTO);
+        logger.info("Created customer with name: " + createCustomerDTO.name());
     }
 }
